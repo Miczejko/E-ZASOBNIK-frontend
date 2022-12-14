@@ -1,0 +1,119 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Alatsi&family=Be+Vietnam+Pro&family=Fragment+Mono&family=Source+Sans+Pro:wght@600&display=swap');
+
+@layer base{
+    th {
+        @apply text-white font-semibold px-10 py-3 th-font;
+    }
+
+    td {
+        @apply bg-white border-y-2 border-slate-700/25 px-2 py-3 td-font hover:bg-red-100 transition-colors duration-200 ease-in;
+    }
+}
+
+@layer utilities {
+    .bg-sidebar-menu{
+        background-color: #171616;
+    }
+
+    .darken{
+        filter: brightness(50%);
+        transition: all ease-in-out;
+    }
+
+    .bg-opacity{
+        background-color: rgba(255, 255, 255, 3%);
+    }
+
+    .custom-blue{
+        color: #1D4ED8
+    }
+
+    .svg-background{
+        /* background-image: url("./sun-tornado.svg");
+        background-repeat: no-repeat;
+        background-attachment: local;
+        background-size: cover; */
+
+        background: linear-gradient(to right, rgb(29, 78, 216), rgb(30, 64, 175), rgb(17, 24, 39))
+    }
+
+    .bg-sidebar-menu-opac{
+        background-color: #1716161b;
+    }
+
+    .w-custom-sidebar{
+        width: 12%;
+    }
+
+    .w-custom-content{
+        width: 88%;
+    }
+
+    .w-custom-sidebar-mobile{
+        width: 4%;
+    }
+
+    .menu-nav-hint{
+        color:#5F5E5E;
+        font-family: 'Alatsi', sans-serif;
+    }
+
+    .menu-nav-font{
+        color: #CBC5C5;
+        font-family: 'Alatsi', sans-serif;
+    }
+
+    .vietnam-font{
+        font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+    .text-xxs{
+        font-size: .65rem;
+        line-height: .75rem;
+    }
+
+
+    /* user section */
+    .user-profile-bg{
+        background-color: rgba(139, 26, 19, 60%)
+    }
+
+    .user-email-font-color{
+        color: #3c3533;
+    }
+
+    /* last section */
+    .bg-submenu-color{
+        background-color: #494A4D;
+    }
+
+    .stroke-1\/5{
+        stroke-width: 1.5;
+    }
+
+    .stroke-color-gray{
+        stroke: #AEA6A6;
+    }
+
+    .stroke-hover{
+        stroke: rgba(139, 26, 19, 60%)
+    }
+
+    /* TABLE UTILS */
+    .th-font{
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    .td-font{
+        font-family: 'Fragment Mono', monospace;
+    }
+
+}
