@@ -28,7 +28,7 @@ const Users = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            url: "http://localhost:3000/user/register",
+            url: "https://e-zasobniktest-api.onrender.com/user/register",
             data: {
                 login: state.value.newLogin,
                 password: state.value.newPassword,
@@ -61,7 +61,7 @@ const Users = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            url: "http://localhost:3000/user/login",
+            url: "https://e-zasobniktest-api.onrender.com/user/login",
             data: {
                 login: state.value.newLogin,
                 password: state.value.newPassword,

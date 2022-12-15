@@ -26,7 +26,7 @@ const getPallets = () => {
     const GetAllPallets = async () => {
         try
         {
-            const palletsResponse = await axios.get("http://localhost:3000/pallets/637bf07584ad8fd5139a3d4f")
+            const palletsResponse = await axios.get("https://e-zasobniktest-api.onrender.com/pallets/637bf07584ad8fd5139a3d4f")
             state.value.pallets = palletsResponse.data
         }
         catch(error)
@@ -38,7 +38,7 @@ const getPallets = () => {
     const GetAllPalletsData = async () => {
         try
         {
-            const promise = axios.get("http://localhost:3000/pallets/637bf07584ad8fd5139a3d4f")
+            const promise = axios.get("https://e-zasobniktest-api.onrender.com/pallets/637bf07584ad8fd5139a3d4f")
             const dataPromise = promise.then((response) => response.data)
             return dataPromise
         }
@@ -55,7 +55,7 @@ const getPallets = () => {
     const addNewPallet = (pallet) => {
         console.log("refresh tutaj=> ")
         try{
-            axios.post("http://localhost:3000/pallets/new", pallet)
+            axios.post("https://e-zasobniktest-api.onrender.com/pallets/new", pallet)
                 .then((res) => {
                     state.value.pallets.push(res.data)
                 })
@@ -67,7 +67,7 @@ const getPallets = () => {
     const deletePallet = (id) => {
         console.log(id)
         try{
-            axios.delete(`http://localhost:3000/pallets/delete/${id}`)
+            axios.delete(`https://e-zasobniktest-api.onrender.com/pallets/delete/${id}`)
                 .then((res) => {
                     const deletedPallet = res.data
 
@@ -84,7 +84,7 @@ const getPallets = () => {
 
     const updatePallet = (id, body) => {
         try{
-            axios.put(`http://localhost:3000/pallets/update/${id}`, body)
+            axios.put(`https://e-zasobniktest-api.onrender.com/pallets/update/${id}`, body)
             .then((res) => {
                 console.log("res->",res)
                 const updatedPallet = res.data
