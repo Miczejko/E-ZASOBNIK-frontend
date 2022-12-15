@@ -1,64 +1,59 @@
 
 
 export class Chart {
-  doughnutLabels = [];
-  doughnutDatasets = [];
 
-  barLabels = [];
-  barDatasets = [];
+  chartLabels = [];
 
-  lineLabels = [];
-  lineDatasets = [];
+  chartDatasets = [{}];
 
 
-  importData(doughnut, bar, line){
-    this.doughnutLabels = doughnut.labels;
 
-    bar.forEach(element => {
-      this.barLabels.push(element.subject);
-      console.log(this.barLabels);
-      this.barDatasets.push(element.value);
+  importData(labels,datasets){
+
+    this.setLables(labels);
+
+    this.setDatasets(datasets);
+
+  }
+
+
+
+  setLables(labels){
+
+    labels.forEach(element => {
+
+      this.chartLabels.push(element.subject);
+
     });
 
-    this.lineLabels = line.labels;
   }
 
-  doughnutData(){
-    return {
-      labels: this.doughnutLabels,
-      datasets: [
-        {
-          backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', ],
-          data: [40, 20, 80, 10]
-        }
-      ]
-    }
+
+
+  setDatasets(datasets){
+
+    datasets.forEach(element => {
+
+      this.chartDatasets[0].data = element.value;
+
+    })
+
   }
 
-  barData(){
+
+
+  getData(){
+
     return {
-      labels: this.barLabels,
-      datasets: [
-        {
-          label: 'value',
-          backgroundColor: ['#99ccff'],
-          data: this.barDatasets
-        }
-      ]
+
+      labels: this.chartLabels,
+
+      datasets: this.chartDatasets
+
     }
+
   }
 
-  lineData(){
-    return {
-      labels: this.lineLabels,
-      datasets: [
-        {
-          backgroundColor: ['#41B883'],
-          label: "dane",
-          data: [40, 20, 80, 10],
-          color: '#41B883'
-        }
-      ]
-    }
-  }
 }
+
+

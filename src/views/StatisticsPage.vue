@@ -14,9 +14,14 @@
   
   <script>
   import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
-  import { Doughnut, Bar, Line } from 'vue-chartjs'
+  import { Bar, Doughnut, Line } from 'vue-chartjs'
   // import * as doughnutConfig from '../components/charts/chartsConfig.js'
-  import { Chart } from '../components/charts/chartsConfig.js'
+  // import { Chart } from '../components/charts/chartsConfig.js'
+  import { BarChart } from '../components/charts/barChart.js'
+  import { DoughnutChart } from '../components/charts/doughnutChart.js'
+  import { LineChart } from '../components/charts/lineChart.js'
+
+
   import PalletCrud from '@/modules/PalletCrud'
   
   ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement )
@@ -45,17 +50,26 @@
         this.loaded = false;
 
         try{
-          const chart = new Chart();
+          const barChart = new BarChart();
+          const doughnutChart = new DoughnutChart();
+          const lineChart = new LineChart();
           const { GetAllPalletsData } = PalletCrud();
+
           GetAllPalletsData().then(data =>{
-            console.log(data);
-            let dgDataLoaded = {labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject]};
-            // let barDataLoaded = {labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject]};
-            let lineDataLoaded = {labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject]};
-            chart.importData(dgDataLoaded,data, lineDataLoaded);
-            this.dgData = chart.doughnutData();
-            this.barData = chart.barData();
-            this.lineData = chart.lineData();
+            // console.log(data);
+            // let dgDataLoaded = {labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject]};
+            // // let barDataLoaded = {labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject]};
+            // let lineDataLoaded = {labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject]};
+            // chart.importData(dgDataLoaded,data, lineDataLoaded);
+            // this.dgData = chart.doughnutData();
+            // this.barData = chart.barData();
+            // this.lineData = chart.lineData();
+            lineChart.importData(data, data);
+            this.lineData = lineChart.getData();
+            doughnutChart.importData(['Earning pallets', 'Losing pallets'], data)
+            this.dgData = doughnutChart.getData();
+            barChart.importData(data, data);
+            this.barData = barChart.getData();
             this.loaded = true;
           });
         }
