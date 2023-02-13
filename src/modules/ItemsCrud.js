@@ -25,7 +25,7 @@ const getItems = () => {
     const getAllItems = async () => {
         try
         {
-            await axios.get(`http://localhost:3000/items/${route.params.id}`)
+            await axios.get(`https://e-zasobniktest-api.onrender.com/items/${route.params.id}`)
                 .then((res) => {
                     state.items = res.data
                 })
@@ -38,7 +38,7 @@ const getItems = () => {
 
     const getSpecificPallet = async (id) => {
         
-        await axios.get(`http://localhost:3000/pallets/get/${id}`)
+        await axios.get(`https://e-zasobniktest-api.onrender.com/pallets/get/${id}`)
             .then((res) => {
                 state.pallet = res.data
             })
@@ -46,7 +46,7 @@ const getItems = () => {
     }
 
     const addItem = async (item) => {
-        await axios.post(`http://localhost:3000/items/new/`, item)
+        await axios.post(`https://e-zasobniktest-api.onrender.com/items/new/`, item)
             .then((res) => {
                 const newItem = res.data
                 console.log("newitem -> ", newItem)
@@ -61,7 +61,7 @@ const getItems = () => {
 
     const editItem = async (id, item) => {
         console.log("item",item)
-        await axios.put(`http://localhost:3000/items/update/${id}`, item)
+        await axios.put(`https://e-zasobniktest-api.onrender.com/items/update/${id}`, item)
             .then((res) => {
                 const updatedItem = res.data
                 console.log(updatedItem)
@@ -74,7 +74,7 @@ const getItems = () => {
     }
 
     const getItem = async (id) => {
-        await axios.get(`http://localhost:3000/items/get/${id}`)
+        await axios.get(`https://e-zasobniktest-api.onrender.com/items/get/${id}`)
             .then((res) => {
                 const item = res.data
                 console.log("item", item)
@@ -88,7 +88,7 @@ const getItems = () => {
     }
 
     const markAsSold = async (id) => {
-        await axios.put(`http://localhost:3000/items/update/${id}`, { state: 'SOLD'})
+        await axios.put(`https://e-zasobniktest-api.onrender.com/items/update/${id}`, { state: 'SOLD'})
             .then((res) => {
                 const updatedItem = res.data
                 console.log(updatedItem)
@@ -101,7 +101,7 @@ const getItems = () => {
     }
 
     const markAsActive = async (id) => {
-        await axios.put(`http://localhost:3000/items/update/${id}`, { state: 'ACTIVE'})
+        await axios.put(`https://e-zasobniktest-api.onrender.com/items/update/${id}`, { state: 'ACTIVE'})
             .then((res) => {
                 const updatedItem = res.data
                 console.log(updatedItem)
@@ -115,7 +115,7 @@ const getItems = () => {
 
     const deleteItem = async (id) => {
         try{
-            axios.delete(`http://localhost:3000/items/delete/${id}`)
+            axios.delete(`https://e-zasobniktest-api.onrender.com/items/delete/${id}`)
                 .then((res) => {
                     const deletedItem = res.data
 
