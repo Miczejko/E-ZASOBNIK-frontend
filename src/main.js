@@ -28,5 +28,11 @@ app.config.globalProperties.$filters = {
 
     colorWithSearchQuery(value) {
         return value
+    },
+
+    colorState(value){
+        if(value==='ACTIVE'){
+            return
+        }
     }
 }

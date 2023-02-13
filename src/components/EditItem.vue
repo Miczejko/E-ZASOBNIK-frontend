@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { computed, onMounted, onUpdated } from 'vue'
+import { computed, onMounted, onBeforeUpdate } from 'vue'
 import ItemsCrud from '@/modules/ItemsCrud'
 
 export default {
@@ -65,8 +65,9 @@ export default {
             getItem(id.value)
         })
 
-        onUpdated(() => {
-            console.log(id.value)
+        onBeforeUpdate(() => {
+            getItem(id.value)
+            console.log('s')
         })
 
         return {

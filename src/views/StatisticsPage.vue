@@ -1,22 +1,31 @@
 <template>
-    <div class="container">
-      <div>
-        <Doughnut v-if="loaded" :data="dgData" :options="options" />
+    <div class="container w-full h-full flex flex-col justify-between py-24 space-y-12">
+      <div class="w-full space-x-12 flex justify-center ">
+
+
+        <div class="w-3/4 bg-white rounded-xl p-5 shadow-2xl">
+            <Bar v-if="loaded" :data="barData" :options="options" />
+        </div>
+
+        <div class="self-end bg-white w-1/4 h-full p-5 rounded-xl shadow-2xl">
+           <Doughnut v-if="loaded" :data="dgData" :options="options" />
+        </div>
+
+        
+
       </div>
-      <div style="height: 600px; background-color: cadetblue;">
-        <Bar v-if="loaded" :data="barData" :options="options" />
-      </div>
-      <div style="height: 600px; background-color: aliceblue;">
-        <Line v-if="loaded" :data="lineData" :options="options" />
-      </div>
+
+        <div class="w-full h-full bg-white rounded-xl p-5 shadow-2xl">
+          <Line v-if="loaded" :data="lineData" :options="options" />
+        </div>
+
+      
     </div>
 </template>
   
   <script>
   import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
   import { Bar, Doughnut, Line } from 'vue-chartjs'
-  // import * as doughnutConfig from '../components/charts/chartsConfig.js'
-  // import { Chart } from '../components/charts/chartsConfig.js'
   import { BarChart } from '../components/charts/barChart.js'
   import { DoughnutChart } from '../components/charts/doughnutChart.js'
   import { LineChart } from '../components/charts/lineChart.js'

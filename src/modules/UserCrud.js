@@ -28,7 +28,7 @@ const Users = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            url: "https://e-zasobniktest-api.onrender.com/user/register",
+            url: "http://localhost:3000/user/register",
             data: {
                 login: state.value.newLogin,
                 password: state.value.newPassword,
@@ -61,7 +61,7 @@ const Users = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            url: "https://e-zasobniktest-api.onrender.com/user/login",
+            url: "http://localhost:3000/user/login",
             data: {
                 login: state.value.newLogin,
                 password: state.value.newPassword,
@@ -74,14 +74,26 @@ const Users = () => {
         try{
             axios(requestOptions)
                 .then(res => {
-                    authToken.value.setItem('auth', res.data._id)
-                })
-                .finally(() => {
-                    router.push("/pallets")
-                    toast.success("You have been logged successfully!", {
-                        draggable: true,
-                        draggablePercent: 0.6,
-                    })
+                    if(res.data.error === undefined)
+                    {
+                        authToken.value.setItem('auth', res.data._id)
+                        router.push("/pallets")
+                        toast.success("You have been logged successfully!", {
+                            draggable: true,
+                            draggablePercent: 0.6,
+                        })
+                    }else if(res.data.error === 'login'){
+                        toast.error("Incorrect login", {
+                            draggable: true,
+                            draggablePercent: 0.6,
+                        })
+                    } else{
+                        toast.error("Incorrect password", {
+                            draggable: true,
+                            draggablePercent: 0.6,
+                        })
+                    }
+                    
                 })
 
             
@@ -96,6 +108,14 @@ const Users = () => {
         toast.info("You have been logged out")
     }
 
+    const moveToLogin = () => {
+        router.push({ path: '/pallets' })
+    }
+
+    const moveToRegister = () => {
+        router.push({ path: '/user/register' })
+    }
+
     const CheckIfLoggedIn = () => {
         
     }
@@ -107,7 +127,9 @@ const Users = () => {
         state,
         CheckIfLoggedIn,
         authToken,
-        logOut
+        logOut,
+        moveToLogin,
+        moveToRegister
     }
 }
 

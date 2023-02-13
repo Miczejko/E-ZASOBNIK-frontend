@@ -37,6 +37,8 @@ export class BarChart extends Chart{
 
                 label: 'value',
 
+                backgroundColor: '#85C8F3 ',
+
                 data: this.chartData
 
             }]

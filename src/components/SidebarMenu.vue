@@ -2,8 +2,11 @@
     <div class="bg-sidebar-menu  md:px-0 px-3 md:relative fixed w-full md:w-custom-sidebar flex flex-row md:flex-col justify-center md:justify-between md:items-start items-center">
 
         <!-- LOGO SECTION -->
-        <div class=" hidden md:flex md:order-1 md:bg-gray-900   border-2 border-dashed rounded-lg w-32 md:w-full h-12 md:h-32  justify-center items-center">
-            <i class="text-gray-400">LOGO</i>
+        <div class=" hidden md:flex md:order-1 md:bg-red-800/75   rounded-2xl -translate-y-1/2 w-32 md:w-full h-12 md:h-32  justify-center items-end pb-4 shadow-2xl">
+            <div class="inline-flex space-x-2 items-center">
+                <img class="w-8 h-8" src="../assets/logo1.png" alt="Logo">
+                <p class="font-bold text-xl bg-gradient-to-r from-yellow-200 to-yellow-500 text-transparent bg-clip-text">E-ZASOBNIK</p>
+            </div>
         </div>
 
         <!-- NAVIGATION  -->
@@ -27,7 +30,9 @@
             </router-link>
 
             <!-- NAVBAR ELEMENT -->
-            <router-link to="/pallets" class="inline-flex space-x-1 xl:space-x-2 hover:bg-zinc-800 rounded-xl p-1 transition-colors hover:shadow-lg">
+            <router-link to="/pallets" 
+            active-class="active"
+            class="inline-flex space-x-1 xl:space-x-2 hover:bg-zinc-800 rounded-xl p-1 transition-colors hover:shadow-lg">
                 <div>
                     <svg class="xl:w-6 xl:h-6 w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.5 13.3333V6.66666C17.4997 6.37438 17.4225 6.08733 
@@ -47,6 +52,10 @@
                 <div class="self-center">
                     <p class="hidden md:block menu-nav-font text-md xl:text-xl">Pallets</p>
                 </div>
+
+                <!-- <div  class="w-3 h-3 rounded-full bg-gradient-to-r from-indigo-300 to-purple-400 self-center translate-x-full shadow-xl">
+
+                </div> -->
             </router-link>
 
             
@@ -66,12 +75,12 @@
 
         </div>
 
-         <!-- PROFILE SECTION  -->
-         <div class="order-first md:order-3 space-y-6 flex flex-row md:flex-col w-full ">
+          
+         <!-- <div class="order-first md:order-3 space-y-6 flex flex-row md:flex-col w-full ">
 
-            <!-- USER PROFILE -->
+            
             <div class="self-center w-10/12 md:user-profile-bg rounded-xl flex flex-col xl:flex-row items-center xl:space-y-0 space-x-1 space-y-1 py-2 px-3">
-                <!-- AVATAR ICON -->
+                
                 <div class="w-full xl:w-1/3 flex justify-start md:justify-center">
                     <img class=" w-8 h-8 md:w-10 md:h-10 " src="../assets/man.png" alt="Avatar icon">
                 </div>
@@ -80,7 +89,7 @@
                     <p class="vietnam-font text-xxs break-words user-email-font-color text-center"> Beginner</p>
                 </div>
             </div>
-        </div>
+            </div> -->
 
         <!-- SMALL ICONS SECTION -->
         <div class="md:order-last md:bg-submenu-color md:w-full flex space-x-3 justify-around md:justify-evenly  md:rounded-t-2xl md:py-3 md:px-4">
@@ -131,3 +140,7 @@ export default {
     
 }
 </script>
+
+<style>
+
+</style>

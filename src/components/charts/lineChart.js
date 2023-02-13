@@ -60,6 +60,7 @@ export class LineChart extends Chart{
 
             datasets: [{
                 label: 'value',
+                backgroundColor: '#9E85F3 ',
                 data: this.chartData
             }]
 

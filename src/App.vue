@@ -3,7 +3,7 @@
     
     <SidebarMenu :isActiveSidebar=isActive></SidebarMenu> 
     
-    <div class="w-full svg-background flex justify-center items-center">
+    <div class="w-full bg-gradient-to-bl from-gray-700 via-gray-900 to-black flex justify-center items-center">
       <router-view></router-view>
     </div>
     

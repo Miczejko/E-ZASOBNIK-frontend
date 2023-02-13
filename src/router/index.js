@@ -34,7 +34,7 @@ const routes = [
     {
         path:'/statistics',
         name: "Statistics",
-        component: StatisticsPage
+        component: CheckIfLoggedIn() ? StatisticsPage : NoLoggedIn
     },
     {
         path:'/user/login',
@@ -55,7 +55,9 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
+    linkActiveClass: "active",
+    linkExactActiveClass: "exact-active",
 })
 
 export default router

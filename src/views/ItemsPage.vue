@@ -80,7 +80,7 @@
                 </button>
             </div>
 
-            <div v-if="state.items.length > 0"  class=" bg-red-100 overflow-y-scroll">
+            <div v-if="state.items.length > 0"  class="overflow-y-scroll">
                 <!-- TABLE -->
                 <table class="w-full">
                     <thead>
@@ -126,12 +126,14 @@
                             </td>
 
                             <td class="text-center hover:bg-white cursor-default"> {{ item.material }} </td>
-                            <td class="text-center hover:bg-white cursor-default"> {{ item.state }} </td>
+                            <td class="text-center hover:bg-white cursor-default" :class="{'text-green-700 font-semibold' : item.state === 'ACTIVE'}"> {{ item.state }} </td>
 
                             <td class="hover:bg-white cursor-default">
                                 
                                 <div class="inline-flex space-x-2 items-center translate-x-1/3">
-                                    <button class="hover:bg-gray-300 p-2 rounded-xl transition-colors ease-in-out">
+                                    
+
+                                    <button @click.stop="markAsSold(item._id)" class="hover:bg-gray-300 p-2 rounded-xl transition-colors ease-in-out">
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_103_2)">
                                             <path d="M12.3933 1.64478V23.6448" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -142,6 +144,13 @@
                                             <rect width="24" height="24" fill="white" transform="translate(0.393311 0.644775)"/>
                                             </clipPath>
                                             </defs>
+                                        </svg>
+                                    </button>
+
+                                    <button @click.stop="markAsActive(item._id)" class="hover:bg-gray-300 p-2 rounded-xl transition-all">
+                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.39331 15.6448C4.39331 15.6448 5.39331 14.6448 8.39331 14.6448C11.3933 14.6448 13.3933 16.6448 16.3933 16.6448C19.3933 16.6448 20.3933 15.6448 20.3933 15.6448V3.64478C20.3933 3.64478 19.3933 4.64478 16.3933 4.64478C13.3933 4.64478 11.3933 2.64478 8.39331 2.64478C5.39331 2.64478 4.39331 3.64478 4.39331 3.64478V15.6448Z" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M4.39331 22.6448V15.6448" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </button>
 
@@ -199,7 +208,7 @@ import NoItemsCase from '@/components/NoItemsCase'
 
 export default {
     setup() {
-        const { state, getAllItems, getSpecificPallet, palletInfo, addItem, editItem, deleteItem  } = ItemsCrud()
+        const { state, getAllItems, getSpecificPallet, palletInfo, addItem, editItem, deleteItem, markAsActive, markAsSold  } = ItemsCrud()
         const { updatePallet  } = PalletCrud()
 
         const route = useRoute()
@@ -245,7 +254,9 @@ export default {
             editItem,
             deleteItem,
             itemId,
-            state
+            state,
+            markAsActive,
+            markAsSold
         }
     },
 

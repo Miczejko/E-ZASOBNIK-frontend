@@ -1,48 +1,56 @@
 <template>
-    <div class="container flex flex-col justify-between items-center h-full space-y-12 py-12">
-        {{ v$.$errors }}
-        <div class="flex flex-col justify-center bg-white  rounded-xl shadow-xl">
-            <div class="bg-amber-400 rounded-t-xl py-2">
-                <p class="text-center th-font text-rose-600 font-bolder">
-                    ADD NEW PALLET
-                </p>
+    <div class="container flex flex-col justify-between items-center h-full space-y-12 py-6">
+        <div class="flex justify-between  w-3/4">
+            <div class="flex flex-col justify-center bg-white  rounded-xl shadow-xl">
+                <div class="bg-amber-400 rounded-t-xl py-2">
+                    <p class="text-center th-font text-rose-600 font-bolder">
+                        ADD NEW PALLET
+                    </p>
+                </div>
+                <div class="p-5 space-y-5 flex flex-col justify-center">
+                    <div class="flex flex-col space-y-2 " >
+                        <p class="font-semibold">Subject of pallet:</p>
+                        <input v-model="newPallet.subject" placeholder="Subject..." class="bg-neutral-200 rounded-md py-2 px-1" type="text">
+
+                        <span v-if="v$.subject.$error"> {{ v$.subject.$errors[0].$message }} </span>
+                        <!-- ERROR -->
+                        <!-- <div class="bg-blue-100" v-for="error of v$.firstName.$errors" :key="error.$uid">
+                            <div class="text-red-200">{{ error.$message }}</div>
+                        </div> -->
+
+                    </div>
+
+                    <div class="flex flex-col space-y-2 ">
+                        <p class="font-semibold">Buy date:</p>
+                        <input v-model="newPallet.buy_date" class="bg-neutral-200 rounded-md py-2 px-1" type="date">                
+                    </div>
+
+                    <div class="flex flex-col space-y-2 ">
+                        <p class="font-semibold">Value:</p>
+                        <input v-model="newPallet.value" placeholder="Value of pallet..." class="bg-neutral-200 rounded-md py-2 px-1" type="number">                
+                    </div>
+
+                    <button @click="addNewPallet(newPallet)"  class="cursor-pointer w-1/2 bg-amber-300 py-2 px-1 text-center font-semibold text-white rounded-xl shadow-xl self-center hover:bg-amber-500 transition-colors">
+                        ADD
+                    </button>
+                </div>
             </div>
-            <div class="p-5 space-y-5 flex flex-col justify-center">
-                <div class="flex flex-col space-y-2 " >
-                    <p class="font-semibold">Subject of pallet:</p>
-                    <input v-model="newPallet.subject" placeholder="Subject..." class="bg-neutral-200 rounded-md py-2 px-1" type="text">
 
-                    <span v-if="v$.subject.$error"> {{ v$.subject.$errors[0].$message }} </span>
-                    <!-- ERROR -->
-                    <!-- <div class="bg-blue-100" v-for="error of v$.firstName.$errors" :key="error.$uid">
-                        <div class="text-red-200">{{ error.$message }}</div>
-                    </div> -->
-
+            <div class="flex">
+                <div class="bg-emerald-200 p-3 rounded-xl self-end shadow-2xl">
+                    <p class="text-md text-emerald-600  font-semibold">
+                        You have total <i>{{ filteredPallets.length }}</i> pallets
+                    </p>
                 </div>
-
-                <div class="flex flex-col space-y-2 ">
-                    <p class="font-semibold">Buy date:</p>
-                    <input v-model="newPallet.buy_date" class="bg-neutral-200 rounded-md py-2 px-1" type="date">                
-                </div>
-
-                <div class="flex flex-col space-y-2 ">
-                    <p class="font-semibold">Value:</p>
-                    <input v-model="newPallet.value" placeholder="Value of pallet..." class="bg-neutral-200 rounded-md py-2 px-1" type="number">                
-                </div>
-
-                <button @click="addNewPallet(newPallet)"  class="cursor-pointer w-1/2 bg-amber-300 py-2 px-1 text-center font-semibold text-white rounded-xl shadow-xl self-center hover:bg-amber-500 transition-colors">
-                    ADD
-                </button>
             </div>
         </div>
 
         
 
-        <div class="flex flex-col w-3/4 space-y-2">
+        <div class="flex flex-col w-3/4 h-full space-y-2">
             <div class="flex justify-between w-full bg-white/25 px-1 py-2 rounded-xl items-center">
                 <div class="inline-flex space-x-3 ">
                     <p>Sort by: </p>
-                    {{sort}}
                     <select @change="sort" class="rounded-md">
                         <option value="">Subject</option>
                         <option value="">Buy Date</option>
@@ -75,128 +83,129 @@
             </div>
 
             
+            <div v-if="filteredPallets.length > 0" class="h-full" >
+                <!-- TABLE -->
+                <table class="w-full overflow-y-scroll" >
+                    <thead>
+                        <tr class="bg-slate-700">
+                            <th class="rounded-tl-xl">#</th>
+                            <th>ID</th>
+                            <th>SUBJECT</th>
+                            <th>STATUS</th>
+                            <th>BUY DATE</th>
+                            <th>SOLD DATE</th>
+                            <th>VALUE</th>
+                            <th class="rounded-tr-xl"></th>
+                        </tr>
+                    </thead>
 
-            <!-- TABLE -->
-            <table class="w-full" v-if="filteredPallets.length > 0">
-                <thead>
-                    <tr class="bg-slate-700">
-                        <th class="rounded-tl-xl">#</th>
-                        <th>ID</th>
-                        <th>SUBJECT</th>
-                        <th>STATUS</th>
-                        <th>BUY DATE</th>
-                        <th>SOLD DATE</th>
-                        <th>VALUE</th>
-                        <th class="rounded-tr-xl"></th>
-                    </tr>
-                </thead>
+                    <tbody>
+                        <!-- Pojedynczy wiersz tabelki o unikalnym ID palety -->
+                        <tr v-for="pallet in filteredPallets" :key="pallet._id" :id="pallet._id" 
+                            @click="palletsDetail(pallet._id)"
+                            @mouseenter="changeBackgroundOnHover(pallet._id, true)"
+                            @mouseleave="changeBackgroundOnHover(pallet._id, false)"
+                            class="cursor-pointer">
 
-                <tbody>
-                    <!-- Pojedynczy wiersz tabelki o unikalnym ID palety -->
-                    <tr v-for="pallet in filteredPallets" :key="pallet._id" :id="pallet._id" 
-                        @click="palletsDetail(pallet._id)"
-                        @mouseenter="changeBackgroundOnHover(pallet._id, true)"
-                        @mouseleave="changeBackgroundOnHover(pallet._id, false)"
-                        class="cursor-pointer">
+                            <td>
+                                <img class="w-6 h-6 mx-auto" src="../assets/pallet.png" alt="Pallet icon">
+                            </td>
 
-                        <td>
-                            <img class="w-6 h-6 mx-auto" src="../assets/pallet.png" alt="Pallet icon">
-                        </td>
+                            <td> 
+                                <i>
+                                    {{ shortIdVersion(pallet._id) }}
+                                </i> 
+                            </td>
 
-                        <td> 
-                            <i>
-                                {{ shortIdVersion(pallet._id) }}
-                            </i> 
-                        </td>
+                            <td class="text-start"> 
+                                <span v-for="letter in pallet.subject" :key="letter" :class="{'text-green-700 font-semibold' : querySearch.includes(letter)}">
+                                    {{ letter }}
+                                </span> 
+                            </td>
 
-                        <td class="text-start"> 
-                            <span v-for="letter in pallet.subject" :key="letter" :class="{'text-green-700 font-semibold' : querySearch.includes(letter)}">
-                                {{ letter }}
-                            </span> 
-                        </td>
-
-                        <td> 
-                            <div v-status:status=pallet.status class="w-1/2 mx-auto text-xs text-white bg-green-500 rounded-2xl shadow-lg px-2 py-1 text-center">
-                                {{ pallet.status }}  
-                            </div>  
-                        </td>
+                            <td> 
+                                <div v-status:status=pallet.status class="w-1/2 mx-auto text-xs text-white bg-green-500 rounded-2xl shadow-lg px-2 py-1 text-center">
+                                    {{ pallet.status }}  
+                                </div>  
+                            </td>
 
 
-                        <td class="text-center"> {{ pallet.buy_date }} </td>
-                        <td class="text-center"> {{ pallet.sold_date }} </td>
+                            <td class="text-center"> {{ pallet.buy_date }} </td>
+                            <td class="text-center"> {{ pallet.sold_date }} </td>
 
-                        <td class="text-center"> 
-                            
-                            <div class="inline-flex space-x-1 items-center">
-                                <p :class="{'text-green-600' : pallet.value > 0, 'text-red-600' : pallet.value < 0}" >
-                                    {{ pallet.value }} 
-                                </p>
+                            <td class="text-center"> 
+                                
+                                <div class="inline-flex space-x-1 items-center">
+                                    <p :class="{'text-green-600' : pallet.value > 0, 'text-red-600' : pallet.value < 0}" >
+                                        {{ pallet.value }} 
+                                    </p>
 
-                                <!-- TRENDING DOWN -->
-                                <div v-if="pallet.value < 0">
-                                    <svg class="w-4 h-4 stroke-red-600" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_106_5)">
-                                            <path d="M23.3933 18.6448L13.8933 9.14478L8.89331 14.1448L1.39331 6.64478"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M17.3933 18.6448H23.3933V12.6448"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_106_5">
+                                    <!-- TRENDING DOWN -->
+                                    <div v-if="pallet.value < 0">
+                                        <svg class="w-4 h-4 stroke-red-600" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_106_5)">
+                                                <path d="M23.3933 18.6448L13.8933 9.14478L8.89331 14.1448L1.39331 6.64478"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M17.3933 18.6448H23.3933V12.6448"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_106_5">
+                                                <rect width="24" height="24" fill="white" transform="translate(0.393311 0.644775)"/>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </div>
+
+                                    <!-- TRENDING UP -->
+                                    <div v-if="pallet.value > 0">
+                                        <svg class="w-4 h-4 stroke-green-600" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_106_2)">
+                                                <path d="M23.3933 6.64478L13.8933 16.1448L8.89331 11.1448L1.39331 18.6448"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M17.3933 6.64478H23.3933V12.6448"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_106_2">
+                                                    <rect width="24" height="24" fill="white" transform="translate(0.393311 0.644775)"/>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                            </td>
+
+
+                            <td class="">
+                                <div class="inline-flex space-x-1 ">
+                                    <button @click.stop="deletePallet(pallet._id)" class="hover:bg-gray-300 p-2 rounded-xl transition-all">
+                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M3.89221 6.06604H5.89221H21.8922" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M19.8922 6.06604V20.066C19.8922 20.5965 19.6815 21.1052 19.3064 21.4803C18.9314 21.8553 18.4226 22.066 17.8922 22.066H7.89221C7.36178 22.066 6.85307 21.8553 6.478 21.4803C6.10293 21.1052 5.89221 20.5965 5.89221 20.066V6.06604M8.89221 6.06604V4.06604C8.89221 3.53561 9.10293 3.0269 9.478 2.65183C9.85307 2.27675 10.3618 2.06604 10.8922 2.06604H14.8922C15.4226 2.06604 15.9314 2.27675 16.3064 2.65183C16.6815 3.0269 16.8922 3.53561 16.8922 4.06604V6.06604" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M10.8922 11.066V17.066" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M14.8922 11.066V17.066" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+
+                                    <!-- <button class="hover:bg-gray-300 p-2 rounded-xl transition-colors ease-in-out">
+                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_103_2)">
+                                            <path d="M12.3933 1.64478V23.6448" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M17.3933 5.64478H9.89331C8.96505 5.64478 8.07481 6.01352 7.41844 6.6699C6.76206 7.32628 6.39331 8.21652 6.39331 9.14478C6.39331 10.073 6.76206 10.9633 7.41844 11.6196C8.07481 12.276 8.96505 12.6448 9.89331 12.6448H14.8933C15.8216 12.6448 16.7118 13.0135 17.3682 13.6699C18.0246 14.3263 18.3933 15.2165 18.3933 16.1448C18.3933 17.073 18.0246 17.9633 17.3682 18.6196C16.7118 19.276 15.8216 19.6448 14.8933 19.6448H6.39331" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <defs>
+                                            <clipPath id="clip0_103_2">
                                             <rect width="24" height="24" fill="white" transform="translate(0.393311 0.644775)"/>
                                             </clipPath>
-                                        </defs>
-                                    </svg>
+                                            </defs>
+                                        </svg>
+                                    </button> -->
                                 </div>
-
-                                <!-- TRENDING UP -->
-                                <div v-if="pallet.value > 0">
-                                    <svg class="w-4 h-4 stroke-green-600" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_106_2)">
-                                            <path d="M23.3933 6.64478L13.8933 16.1448L8.89331 11.1448L1.39331 18.6448"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M17.3933 6.64478H23.3933V12.6448"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_106_2">
-                                                <rect width="24" height="24" fill="white" transform="translate(0.393311 0.644775)"/>
-                                            </clipPath>
-                                        </defs>
-                                    </svg>
-                                </div>
-                            </div>
-
-                        </td>
+                            </td>
 
 
-                        <td class="">
-                            <div class="inline-flex space-x-1 ">
-                                <button @click.stop="deletePallet(pallet._id)" class="hover:bg-gray-300 p-2 rounded-xl transition-all">
-                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M3.89221 6.06604H5.89221H21.8922" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M19.8922 6.06604V20.066C19.8922 20.5965 19.6815 21.1052 19.3064 21.4803C18.9314 21.8553 18.4226 22.066 17.8922 22.066H7.89221C7.36178 22.066 6.85307 21.8553 6.478 21.4803C6.10293 21.1052 5.89221 20.5965 5.89221 20.066V6.06604M8.89221 6.06604V4.06604C8.89221 3.53561 9.10293 3.0269 9.478 2.65183C9.85307 2.27675 10.3618 2.06604 10.8922 2.06604H14.8922C15.4226 2.06604 15.9314 2.27675 16.3064 2.65183C16.6815 3.0269 16.8922 3.53561 16.8922 4.06604V6.06604" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M10.8922 11.066V17.066" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M14.8922 11.066V17.066" stroke="red" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </button>
-
-                                <!-- <button class="hover:bg-gray-300 p-2 rounded-xl transition-colors ease-in-out">
-                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_103_2)">
-                                        <path d="M12.3933 1.64478V23.6448" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M17.3933 5.64478H9.89331C8.96505 5.64478 8.07481 6.01352 7.41844 6.6699C6.76206 7.32628 6.39331 8.21652 6.39331 9.14478C6.39331 10.073 6.76206 10.9633 7.41844 11.6196C8.07481 12.276 8.96505 12.6448 9.89331 12.6448H14.8933C15.8216 12.6448 16.7118 13.0135 17.3682 13.6699C18.0246 14.3263 18.3933 15.2165 18.3933 16.1448C18.3933 17.073 18.0246 17.9633 17.3682 18.6196C16.7118 19.276 15.8216 19.6448 14.8933 19.6448H6.39331" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </g>
-                                        <defs>
-                                        <clipPath id="clip0_103_2">
-                                        <rect width="24" height="24" fill="white" transform="translate(0.393311 0.644775)"/>
-                                        </clipPath>
-                                        </defs>
-                                    </svg>
-                                </button> -->
-                            </div>
-                        </td>
-
-
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <NoResultsCase v-if="filteredPallets.length === 0"></NoResultsCase>
         </div>
@@ -242,7 +251,6 @@ export default {
             value: 0,
             userId: ""
         })
-        
 
         const filteredPallets = computed(() => {
             return state.value.pallets.filter(pallet => pallet.subject.toUpperCase().includes(querySearch.value.toUpperCase()))
