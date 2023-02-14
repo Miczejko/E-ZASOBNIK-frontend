@@ -59,7 +59,7 @@ import { StripeCheckout } from '@vue-stripe/vue-stripe';
     StripeCheckout,
   },
   data () {
-    this.publishableKey = "pk_live_51KcsMdKHnal6LCTQJjZO6BmFBNyXDuwe0H1HJuBZyJcfnJOWtE1hnb985akp7NnmlHCpUBigQlKG7nvCpweajElh00gxsH8IQA";
+    this.publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
     return {
       loading: false,
       lineItems: [
